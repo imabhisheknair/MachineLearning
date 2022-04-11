@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>find.er!</title> 
+
+    <style>
+      .ring
+      {
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        width:150px;
+        height:150px;
+        background:transparent;
+        border:3px solid #3c3c3c;
+        border-radius:50%;
+        text-align:center;
+        line-height:150px;
+        font-family:sans-serif;
+        font-size:20px;
+        color:#fff000;
+        letter-spacing:4px;
+        text-transform:uppercase;
+        text-shadow:0 0 10px #fff000;
+        box-shadow:0 0 20px rgba(0,0,0,.5);
+      }
+      .ring:before
+      {
+        content:'';
+        position:absolute;
+        top:-3px;
+        left:-3px;
+        width:100%;
+        height:100%;
+        border:3px solid transparent;
+        border-top:3px solid #fff000;
+        border-right:3px solid #fff000;
+        border-radius:50%;
+        animation:animateC 2s linear infinite;
+      }
+      span
+      {
+        display:block;
+        position:absolute;
+        top:calc(50% - 2px);
+        left:50%;
+        width:50%;
+        height:4px;
+        background:transparent;
+        transform-origin:left;
+        animation:animate 2s linear infinite;
+      }
+      span:before
+      {
+        content:'';
+        position:absolute;
+        width:16px;
+        height:16px;
+        border-radius:50%;
+        background:#fff000;
+        top:-6px;
+        right:-8px;
+        box-shadow:0 0 20px #fff000;
+      }
+      @keyframes animateC
+      {
+        0%
+        {
+          transform:rotate(0deg);
+        }
+        100%
+        {
+          transform:rotate(360deg);
+        }
+      }
+      @keyframes animate
+      {
+        0%
+        {
+          transform:rotate(45deg);
+        }
+        100%
+        {
+          transform:rotate(405deg);
+        }
+      }
+      body {
+        margin:0px;
+        height:100vh;
+        background: #1283da;
+      }
+      .center {
+        height:100%;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+
+      }
+      .form-input {
+        width:350px;
+        padding:20px;
+        background:#fff;
+        box-shadow: -3px -3px 7px rgba(94, 104, 121, 0.377),
+                    3px 3px 7px rgba(94, 104, 121, 0.377);
+      }
+      .form-input img {
+        width:100%;
+        display:none;
+        margin-bottom:30px;
+      }
+      .form-input input {
+        display:none;
+      }
+
+      .form-input label {
+        display:block;
+        width:45%;
+        height:45px;
+        margin-left: 25%;
+        line-height:50px;
+        text-align:center;
+        background:#1172c2;
+        color:#fff;
+        font-size:15px;
+        font-family:"Open Sans",sans-serif;
+        text-transform:Uppercase;
+        font-weight:600;
+        border-radius:5px;
+        cursor:pointer;
+      }
+      .loader {
+        margin: auto;
+        border: 7px solid #EAF0F6;
+        border-radius: 50%;
+        border-top: 7px solid #FF7A59;
+        width: 40px;
+        height: 40px;
+        animation: spinner 1s linear infinite;
+      }
+
+      @keyframes spinner {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+    </head>
+  <body>
+      
+    <!--  -->
+    
+    <div class="center">
+      
+      <div class="form-input">
+        <center>
+          <h1 style="font-family: 'Segoe UI';">find.er!</h1>
+        </center>
+        <div class="preview">
+          <img id="file-ip-1-preview">
+        </div> 
+        <div class="form-sec">
+        <label style="width: 153px;" for="file-ip-1">Choose Image</label>
+          <input type="file" name="img" id="file-ip-1" accept="image/*" onchange="showPreview(event);">
+        <center>
+          <div class="error-msg" style="color: red; font-size: small;"></div>
+          <button class="btn btn-primary" style="width: 130px;" id="find-btn">Find Now</button></center>
+      </div>
+        <div class="output" style="display: none;">
+          <div class="loader" style="display: none;"> </div>
+          <div class="ring">Loading
+            <span></span>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
+     <script>
+
+       function showPreview(event){
+          if(event.target.files.length > 0){
+            var src = URL.createObjectURL(event.target.files[0]);
+            var preview = document.getElementById("file-ip-1-preview");
+            preview.src = src;
+            preview.style.display = "block";
+          }
+        }
+     </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+    <script>
+      $('#find-btn').click(function(e){
+          var file = $('#file-ip-1')[0].files[0];
+          if (!file){
+            $('.error-msg').html('Please select an image file <br>')
+            return false
+          }
+          $('.error-msg').html('')
+          $('.loader').attr('style', 'display: block;')
+          $('.output').attr('style', 'display: block;')
+          $('.form-sec').attr('style', 'display: none;')
+
+          var fd = new FormData();
+          fd.append('img', file);
+          fd.append('csrfmiddlewaretoken', '{{csrf_token}}');
+
+          console.log(fd.getAll('img'));
+
+          e.preventDefault();
+          var path = 'find';
+          $.ajax({
+            url: path,
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: fd,
+            mimeType: 'multipart/form-data',
+            dataType : 'json',
+            success: function(response){
+                $('.loader').attr('style', 'display: none;')
+                var pred = response.pred
+                var conf = response.conf
+                $('.output').html('<center><h3>'+ pred +'</h3>Confidence: '+conf+'<br><br><a href="">Find More</a></center>');
+            }
+          })
+      })
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
